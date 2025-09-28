@@ -36,34 +36,62 @@ from .serializers import DeveloperSerializer, ProjectSerializer, TeamSerializer,
 # #     return Response()
 #     pass
 
+# from django.contrib.auth.decorators import login_required
+# this only works for function based views
+# @login_required()
+
+
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
+#to use DOT authentication in DRF generic views use this method
+# permission_classes = [TokenHasReadWriteScope]
+
 class DeveloperListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = Developers.objects.all()
     serializer_class = DeveloperSerializer
 
 class DeveloperRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = Developers.objects.all()
     serializer_class = DeveloperSerializer
 
 class ProjectListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = Projects.objects.all()
     serializer_class = ProjectSerializer
 
 class ProjectRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = Projects.objects.all()
     serializer_class = ProjectSerializer
 
 class TeamListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = Teams.objects.all()
     serializer_class = TeamSerializer
 
 class TeamRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = Teams.objects.all()
     serializer_class = TeamSerializer
 
 class WorkingOnListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = WorkingOn.objects.all()
     serializer_class = WorkingOnSerializer
 
 class WorkingOnRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    permission_classes = [TokenHasReadWriteScope]
     queryset = WorkingOn.objects.all()
     serializer_class = WorkingOnSerializer
+
+
+
+#############################################################################
+
+from oauth2_provider.views.generic import ProtectedResourceView
+from django.http import HttpResponse
+
+class ApiEndpoint(ProtectedResourceView):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('Hello, OAuth2!')

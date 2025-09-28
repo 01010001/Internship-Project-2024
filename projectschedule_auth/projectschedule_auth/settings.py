@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oauth2_provider',
+    'drf_social_oauth2',
     'rest_framework',
     'corsheaders',
 ]
@@ -48,10 +49,10 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'oauth2_provider.middleware.OAuth2ExtraTokenMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -133,19 +134,22 @@ LOGIN_URL = '/admin/login/'
 
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
-}
-
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-    )
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope',  'introspection': 'Introspect token scope', 'groups': 'Access to your groups',}
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        #'drf_social_oauth2.authentication.SocialAuthentication',
+    )
+}
+
+
+
 AUTHENTICATION_BACKENDS = [
+#    'drf_social_oauth2.backends.DjangoOAuth2',
     'oauth2_provider.backends.OAuth2Backend',
     # Uncomment following if you want to access the admin
     'django.contrib.auth.backends.ModelBackend',

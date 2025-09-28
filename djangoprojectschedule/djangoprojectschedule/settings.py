@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'projectschedule',
+    'oauth2_provider',
     'corsheaders'
 ]
 
@@ -49,6 +50,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -130,3 +134,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #localhost ve kendinden farkli domainlerden erisim icin CORS.
 # CORS_ORIGIN_WHITELIST = ['http://127.0.0.1']
 CORS_ORIGIN_ALLOW_ALL = True
+
+AUTHENTICATION_BACKENDS = [
+    'oauth2_provider.backends.OAuth2Backend',
+    # Uncomment following if you want to access the admin
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        #'drf_social_oauth2.authentication.SocialAuthentication',
+    )
+}
+
+OAUTH2_PROVIDER = {
+    
+    'RESOURCE_SERVER_INTROSPECTION_URL': 'http://localhost:8001/o/introspect/',
+    'RESOURCE_SERVER_AUTH_TOKEN': 'EInurKRstdv7LdMMT2bgva4bIHfQOr',
+    # OR this but not both:
+    # 'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': ('rs_client_id','rs_client_secret'),
+}

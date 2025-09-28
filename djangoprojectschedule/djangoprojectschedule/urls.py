@@ -20,7 +20,8 @@ from projectschedule import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/login/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('a/', include("projectschedule.urls"))
+    path('', include("projectschedule.urls"))
     
 ]

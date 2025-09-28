@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from django.contrib import admin
 admin.autodiscover()
@@ -31,6 +31,7 @@ oauth2_endpoint_views = [
     path('authorize/', oauth2_views.AuthorizationView.as_view(), name="authorize"),
     path('token/', oauth2_views.TokenView.as_view(), name="token"),
     path('revoke-token/', oauth2_views.RevokeTokenView.as_view(), name="revoke-token"),
+    path('introspect/', oauth2_views.IntrospectTokenView.as_view(), name="introspection"),
 ]
 
 if settings.DEBUG:
@@ -50,13 +51,19 @@ if settings.DEBUG:
             name="authorized-token-delete"),
     ]
 
+
+
 urlpatterns = [
     path('secret/', secret_page, name='secret'),
     # OAuth 2 endpoints:
     # need to pass in a tuple of the endpoints as well as the app's name
     # because the app_name attribute is not set in the included module
+    path('admin/', admin.site.urls),
     path('o/', include((oauth2_endpoint_views, 'oauth2_provider'), namespace="oauth2_provider")),
     path('api/hello', ApiEndpoint.as_view()),  # an example resource endpoint
+    path('users/', UserList.as_view()),
+    path('users/<pk>/', UserDetails.as_view()),
+    path('groups/', GroupList.as_view()),
 ]
 
 
