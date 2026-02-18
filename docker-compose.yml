@@ -1,0 +1,21 @@
+services:
+  schedule-app:
+    build: ./djangoprojectschedule
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./djangoprojectschedule:/app
+
+  auth-app:
+    build: ./projectschedule_auth
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./projectschedule_auth:/app
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html # This maps your local files to Nginx

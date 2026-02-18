@@ -1,5 +1,5 @@
 function listProjects() {
-    fetch('http://127.0.0.1:8000/a/projects/')
+    fetch('http://127.0.0.1:8000/projects/')
         .then(response => response.json())
         .then(projects => {
 
@@ -41,7 +41,7 @@ function listProjects() {
 
                 const ul = document.createElement('ul');
 
-                fetch('http://127.0.0.1:8000/a/working-on/')
+                fetch('http://127.0.0.1:8000/working-on/')
                     .then(response => response.json())
                     .then(entries => {
                         entries.forEach(entry => {
@@ -55,7 +55,7 @@ function listProjects() {
                                 if (!addedDevelopers.has(entry.developer)) {
                                     addedDevelopers.add(entry.developer);
 
-                                    fetch(`http://127.0.0.1:8000/a/developers/${entry.developer}/`)
+                                    fetch(`http://127.0.0.1:8000/developers/${entry.developer}/`)
                                         .then(response => response.json())
                                         .then(developer => {
                                             const li = document.createElement('li');
@@ -131,7 +131,7 @@ function formatDate(dateString) {
 
 
 function listAllProjects() {
-    fetch('http://127.0.0.1:8000/a/projects/')
+    fetch('http://127.0.0.1:8000//projects/')
         .then(response => response.json())
         .then(projects => {
             const container = document.querySelector('.row');
@@ -164,7 +164,7 @@ function listAllProjects() {
 
                 Promise.all(
                     project.developers.map(devId =>
-                        fetch(`http://127.0.0.1:8000/a/developers/${devId}/`)
+                        fetch(`http://127.0.0.1:8000//developers/${devId}/`)
                             .then(response => response.json())
                             .then(developer => {
                                 if (!addedDevelopers.has(developer.full_name)) {
@@ -212,7 +212,7 @@ function listAllProjects() {
 }
 
 function showEditProjectForm(projectId) {
-    fetch(`http://127.0.0.1:8000/a/projects/${projectId}/`)
+    fetch(`http://127.0.0.1:8000/projects/${projectId}/`)
         .then(response => response.json())
         .then(project => {
 
@@ -321,7 +321,7 @@ function showEditProjectForm(projectId) {
                     project_active: activeCheckbox.checked
                 };
 
-                fetch(`http://127.0.0.1:8000/a/projects/${projectId}/`, {
+                fetch(`http://127.0.0.1:8000/projects/${projectId}/`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -387,7 +387,7 @@ function manageWorkingOnEntry(projectId) {
         </div>`;
         // w-100 btn btn-primary btn-lg mt-3
 
-    fetch('http://127.0.0.1:8000/a/developers/')
+    fetch('http://127.0.0.1:8000/developers/')
         .then(response => response.json())
         .then(developers => {
             const developerSelect = document.getElementById('developerSelect');
@@ -419,7 +419,7 @@ function manageWorkingOnEntry(projectId) {
             is_relation_active: isActive
         };
 
-        fetch('http://127.0.0.1:8000/a/working-on/', {
+        fetch('http://127.0.0.1:8000/working-on/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -444,8 +444,8 @@ function manageWorkingOnEntry(projectId) {
 function editWorkingOn(work) {
 
     Promise.all([
-        fetch(`http://127.0.0.1:8000/a/developers/${work.developer}/`).then(response => response.json()),
-        fetch(`http://127.0.0.1:8000/a/projects/${work.project}/`).then(response => response.json())
+        fetch(`http://127.0.0.1:8000/developers/${work.developer}/`).then(response => response.json()),
+        fetch(`http://127.0.0.1:8000/projects/${work.project}/`).then(response => response.json())
     ])
         .then(([developer, project]) => {
             const container = document.querySelector('.row');
@@ -501,7 +501,7 @@ function editWorkingOn(work) {
                     project: work.project
                 };
 
-                fetch(`http://127.0.0.1:8000/a/working-on/${work.id}/`, {
+                fetch(`http://127.0.0.1:8000/working-on/${work.id}/`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -522,7 +522,7 @@ function editWorkingOn(work) {
 
 
 function listDevelopers() {
-    fetch('http://127.0.0.1:8000/a/developers/')
+    fetch('http://127.0.0.1:8000/developers/')
         .then(response => response.json())
         .then(developers => {
             const container = document.querySelector('.row');
@@ -639,7 +639,7 @@ function showNewDeveloperForm() {
             developer_active: document.getElementById('active').checked
         };
 
-        fetch('http://127.0.0.1:8000/a/developers/?format=json', {
+        fetch('http://127.0.0.1:8000/developers/?format=json', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(developerData)
@@ -705,7 +705,7 @@ function showNewProjectForm() {
             project_active: document.getElementById('active').checked
         };
 
-        fetch('http://127.0.0.1:8000/a/projects/?format=json', {
+        fetch('http://127.0.0.1:8000/projects/?format=json', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(projectData)
@@ -735,7 +735,7 @@ function workPermit() {
     developerSelect.className = 'form-select';
     developerSelect.required = true;
 
-    fetch('http://127.0.0.1:8000/a/developers/?format=json')
+    fetch('http://127.0.0.1:8000/developers/?format=json')
         .then(response => response.json())
         .then(developers => {
             developers.forEach(developer => {
@@ -779,7 +779,7 @@ function workPermit() {
             return;
         }
 
-        fetch('http://127.0.0.1:8000/a/working-on/?format=json')
+        fetch('http://127.0.0.1:8000/working-on/?format=json')
             .then(response => response.json())
             .then(allPermits => {
                 const developerPermits = allPermits.filter(permit =>
@@ -801,13 +801,13 @@ function workPermit() {
                 }
 
 
-                return fetch(`http://127.0.0.1:8000/a/developers/${developerId}/?format=json`);
+                return fetch(`http://127.0.0.1:8000/developers/${developerId}/?format=json`);
             })
             .then(response => response.json())
             .then(developer => {
 
                 developer.project.forEach(projectId => {
-                    fetch('http://127.0.0.1:8000/a/working-on/', {
+                    fetch('http://127.0.0.1:8000/working-on/', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -864,7 +864,7 @@ function workPermit() {
     developerList.className = 'list-group';
     // developerList.style = "background-color: rgb(238, 234, 238)"
 
-    fetch('http://127.0.0.1:8000/a/working-on/?format=json')
+    fetch('http://127.0.0.1:8000/working-on/?format=json')
         .then(response => response.json())
         .then(workPermits => {
             const activeDevelopers = new Set();
@@ -884,7 +884,7 @@ function workPermit() {
             });
 
             activeDevelopers.forEach(developerId => {
-                fetch(`http://127.0.0.1:8000/a/developers/${developerId}/?format=json`)
+                fetch(`http://127.0.0.1:8000/developers/${developerId}/?format=json`)
                     .then(response => response.json())
                     .then(developer => {
                         const listItem = document.createElement('li');
@@ -912,7 +912,7 @@ function workPermit() {
 
 
 function showDeveloperDetails(developerId) {
-    fetch(`http://127.0.0.1:8000/a/developers/${developerId}/?format=json`)
+    fetch(`http://127.0.0.1:8000/developers/${developerId}/?format=json`)
         .then(response => response.json())
         .then(developer => {
             const container = document.querySelector('.row');
@@ -951,13 +951,13 @@ function showDeveloperDetails(developerId) {
             container.appendChild(col);
 
 
-            fetch(`http://127.0.0.1:8000/a/working-on/?format=json`)
+            fetch(`http://127.0.0.1:8000/working-on/?format=json`)
                 .then(response => response.json())
                 .then(works => {
                     const worksList = document.createElement('ul');
                     works.forEach(work => {
                         if (developerId == work.developer) {
-                            fetch(`http://127.0.0.1:8000/a/projects/${work.project}/?format=json`)
+                            fetch(`http://127.0.0.1:8000/projects/${work.project}/?format=json`)
                                 .then(response => response.json())
                                 .then(project => {
                                     const workLi = document.createElement('li');
