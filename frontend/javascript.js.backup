@@ -1,7 +1,67 @@
-function listProjects() {
-    fetch('http://127.0.0.1:8000/projects/')
-        .then(response => response.json())
-        .then(projects => {
+const authConfig = {
+    authority: "http://127.0.0.1:8001/o", // Your Django Auth Server URL
+    client_id: "c99uuHdyMV5UxbPMnuLyB3HMtdOagYeh8dHXCrvQ",
+    redirect_uri: "http://localhost:8080/index.html", // Where the user returns
+    response_type: "code",
+    scope: "openid profile",
+    post_logout_redirect_uri: "http://localhost:8080/index.html"
+};
+
+const userManager = new oidc.UserManager(authConfig);
+
+function login() {
+    userManager.signinRedirect();
+}
+
+function logout() {
+    userManager.signoutRedirect();
+}
+
+function updateAuthUI(user) {
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (user && !user.expired) {
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'block';
+    } else {
+        loginBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+    }
+}
+
+async function authenticatedFetch(url, options = {}) {
+    // Get the current user session from oidc-client-ts
+    const user = await userManager.getUser();
+    
+    if (!user || !user.access_token) {
+        console.error("No access token found. Redirecting to login.");
+        login();
+        throw new Error("Unauthorized");
+    }
+
+    // Attach the token to the headers
+    const headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${user.access_token}`
+    };
+
+    return fetch(url, { ...options, headers });
+}
+
+async function listProjects() {
+
+    const user = await userManager.getUser();
+    const token = user ? user.access_token : null;
+
+    authenticatedFetch('http://127.0.0.1:8000/projects/')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(projects => {
 
             const container = document.querySelector('.row');
             container.innerHTML = '';
@@ -987,7 +1047,25 @@ function showDeveloperDetails(developerId) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    //initial page.
-    listProjects()
+document.addEventListener("DOMContentLoaded", async function () {
+    // 1. Check if we are returning from Django Auth Server
+    if (window.location.search.includes("code=")) {
+        try {
+            await userManager.signinCallback();
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (error) {
+            console.error("Error processing login:", error);
+        }
+    }
+
+    // 2. Get the user session
+    const user = await userManager.getUser();
+    
+    // 3. Update the Login/Logout buttons
+    updateAuthUI(user);
+
+    // 4. Only fetch projects if the user has a valid token
+    if (user && !user.expired) {
+        listProjects();
+    }
 });

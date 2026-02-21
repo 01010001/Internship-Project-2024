@@ -1,9 +1,12 @@
-from oauth2_provider.views.generic import ProtectedResourceView
-from django.http import HttpResponse
+from rest_framework import generics, permissions, serializers
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+from django.contrib.auth.models import User, Group
 
-from django.contrib.auth.decorators import login_required
+# from oauth2_provider.views.generic import ProtectedResourceView
+# from django.http import HttpResponse
+# from django.contrib.auth.decorators import login_required
 
-@login_required() # checks if the request.user.is_authenticated is true of false
+# @login_required() # checks if the request.user.is_authenticated is true of false
 #request.user comes from the settings auth backends
     # AUTHENTICATION_BACKENDS = [
     #     'oauth2_provider.backends.OAuth2Backend',
@@ -12,19 +15,13 @@ from django.contrib.auth.decorators import login_required
 #if a request has a Bearer token OAuth 2.0 handles it
 #else modelBackend looks up users by username/password
 #default django auth doesnt work if the ModelBackend isnt listed
-def secret_page(request, *args, **kwargs):
-    return HttpResponse('Secret contents!', status=200)
+# def secret_page(request, *args, **kwargs):
+#     return HttpResponse('Secret contents!', status=200)
 
+# class ApiEndpoint(ProtectedResourceView):
+#     def get(self, request, *args, **kwargs):
+#         return HttpResponse('Hello, OAuth2!')
 
-class ApiEndpoint(ProtectedResourceView):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, OAuth2!')
-
-
-
-from rest_framework import generics, permissions, serializers
-from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
-from django.contrib.auth.models import User, Group
     
 # first we define the serializers
 class UserSerializer(serializers.ModelSerializer):

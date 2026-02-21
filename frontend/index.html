@@ -4,24 +4,31 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="javascript.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
     </style>
     <title>Projects.</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client-ts/3.0.1/browser/oidc-client-ts.min.js"></script>
+    <script type="module" src="main.js"></script>
 </head>
+
 
 <body style="background-color: #faf7fa;">
     <header>
-        <div class="navbar navbar-dark shadow-sm justify-content-center" style="background-color: #947897;">
-            <div class="container-fluid justify-content-center">
-                <a href="#" class="navbar-brand d-flex align-items-center " onclick="listProjects()">PROJELER</a>
-                <a href="#" class="navbar-brand d-flex align-items-center" onclick="listDevelopers()">ÇALIŞANLAR</a>
-                <a href="#" class="navbar-brand d-flex align-items-center" onclick="workPermit()">İZİNLER</a>
-                <!-- <a href="#" class="navbar-brand d-flex align-items-center" onclick="manageWorkingOnEntry()">proje-iliskileri</a>
-                <a href="#" class="navbar-brand d-flex align-items-center" onclick="showNewDeveloperForm()">yeni-developer</a>
-                <a href="#" class="navbar-brand d-flex align-items-center" onclick="showNewProjectForm()">yeni-proje</a> -->
+        <div class="navbar navbar-dark shadow-sm" style="background-color: #947897;">
+            <div class="container-fluid d-flex justify-content-between">
+                
+                <div class="d-flex justify-content-center flex-grow-1">
+                    <a href="#" class="navbar-brand d-flex align-items-center " onclick="listProjects()">PROJELER</a>
+                    <a href="#" class="navbar-brand d-flex align-items-center" onclick="listDevelopers()">ÇALIŞANLAR</a>
+                    <a href="#" class="navbar-brand d-flex align-items-center" onclick="workPermit()">İZİNLER</a>
+                </div>
+
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" id="loginBtn" onclick="login()">Giriş Yap</button>
+                    <button class="btn btn-light" id="logoutBtn" onclick="logout()" style="display: none;">Çıkış Yap</button>
+                </div>
                 
             </div>
         </div>
@@ -30,9 +37,6 @@
         <div class="album py-5" style="background-color: #faf7fa;">
             <div class="container">
                 <div class="row row-cols-2 row-cols-sm-2 row-cols-md-2 g-2">
-
-                    
-                
 
                 </div>
             </div>

@@ -1,19 +1,3 @@
-"""
-URL configuration for projectschedule_auth project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.urls import path, include, re_path
 
 from django.contrib import admin
@@ -23,7 +7,8 @@ from oauth2_provider import urls as oauth2_urls
 
 import oauth2_provider.views as oauth2_views
 from django.conf import settings
-from .views import ApiEndpoint, UserList, UserDetails, GroupList, secret_page
+from .views import UserList, UserDetails, GroupList
+#from .views import ApiEndpoint, secret_page
 
 
 # OAuth2 provider endpoints
@@ -32,6 +17,11 @@ oauth2_endpoint_views = [
     path('token/', oauth2_views.TokenView.as_view(), name="token"),
     path('revoke-token/', oauth2_views.RevokeTokenView.as_view(), name="revoke-token"),
     path('introspect/', oauth2_views.IntrospectTokenView.as_view(), name="introspection"),
+
+    # OpenID Connect endpoints
+    path('.well-known/openid-configuration', oauth2_views.ConnectDiscoveryInfoView.as_view(), name="oidc-connect-discovery-info"),
+    path('.well-known/jwks.json', oauth2_views.JwksInfoView.as_view(), name="jwks-info"),
+    path('userinfo/', oauth2_views.UserInfoView.as_view(), name="user-info"),
 ]
 
 if settings.DEBUG:
@@ -52,27 +42,15 @@ if settings.DEBUG:
     ]
 
 
-
 urlpatterns = [
-    path('secret/', secret_page, name='secret'),
+    # path('secret/', secret_page, name='secret'),
     # OAuth 2 endpoints:
     # need to pass in a tuple of the endpoints as well as the app's name
     # because the app_name attribute is not set in the included module
-    path('admin/', admin.site.urls),
     path('o/', include((oauth2_endpoint_views, 'oauth2_provider'), namespace="oauth2_provider")),
-    path('api/hello', ApiEndpoint.as_view()),  # an example resource endpoint
+    path('admin/', admin.site.urls),
     path('users/', UserList.as_view()),
     path('users/<pk>/', UserDetails.as_view()),
     path('groups/', GroupList.as_view()),
+    # path('api/hello', ApiEndpoint.as_view()),
 ]
-
-
-# # Setup the URLs and include login URLs for the browsable API.
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('o/', include(oauth2_urls)),
-#     path('users/', UserList.as_view()),
-#     path('users/<pk>/', UserDetails.as_view()),
-#     path('groups/', GroupList.as_view()),
-#     # ...
-# ]
