@@ -2,12 +2,8 @@ from rest_framework import generics, permissions, serializers
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 from django.contrib.auth.models import User, Group
 
-# from oauth2_provider.views.generic import ProtectedResourceView
-# from django.http import HttpResponse
-# from django.contrib.auth.decorators import login_required
-
-# @login_required() # checks if the request.user.is_authenticated is true of false
-#request.user comes from the settings auth backends
+# @login_required() # checks if the request.user.is_authenticated is true or false
+# request.user comes from the settings auth backends
     # AUTHENTICATION_BACKENDS = [
     #     'oauth2_provider.backends.OAuth2Backend',
     #     # Uncomment following if you want to access the admin
@@ -18,12 +14,7 @@ from django.contrib.auth.models import User, Group
 # def secret_page(request, *args, **kwargs):
 #     return HttpResponse('Secret contents!', status=200)
 
-# class ApiEndpoint(ProtectedResourceView):
-#     def get(self, request, *args, **kwargs):
-#         return HttpResponse('Hello, OAuth2!')
 
-    
-# first we define the serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -34,7 +25,7 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = ("name", )
 
-# Create the API views
+
 class UserList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
     queryset = User.objects.all()
