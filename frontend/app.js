@@ -15,7 +15,7 @@ function getContainer() {
 export async function listProjects() {
     const user = await auth.getUser();
     if (!user || user.expired) {
-        auth.login();
+        auth.showLoginRequiredMessage();
         return;
     }
     const container = getContainer();
@@ -122,7 +122,7 @@ export async function listProjects() {
 export async function listAllProjects() {
     const user = await auth.getUser();
     if (!user || user.expired) {
-        auth.login();
+        auth.showLoginRequiredMessage();
         return;
     }
     const container = getContainer();
@@ -433,7 +433,7 @@ function escapeHtml(text) {
 export async function listDevelopers() {
     const user = await auth.getUser();
     if (!user || user.expired) {
-        auth.login();
+        auth.showLoginRequiredMessage();
         return;
     }
     const container = getContainer();
@@ -595,7 +595,7 @@ export function showNewProjectForm() {
 export async function workPermit() {
     const user = await auth.getUser();
     if (!user || user.expired) {
-        auth.login();
+        auth.showLoginRequiredMessage();
         return;
     }
     const container = getContainer();

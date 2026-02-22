@@ -4,7 +4,7 @@
  */
 
 import { API_BASE_URL, userManager } from './config.js';
-import { login } from './auth.js';
+import { showLoginRequiredMessage } from './auth.js';
 
 const axios = typeof globalThis !== 'undefined' ? globalThis.axios : typeof window !== 'undefined' ? window.axios : null;
 const api = axios ? axios.create({ baseURL: API_BASE_URL }) : null;
@@ -28,7 +28,7 @@ if (api) {
         (res) => res,
         (err) => {
             if (err.response && err.response.status === 401) {
-                login();
+                showLoginRequiredMessage();
                 const e = new Error('Unauthorized');
                 e.code = 'UNAUTHORIZED';
                 return Promise.reject(e);

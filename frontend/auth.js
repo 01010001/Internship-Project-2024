@@ -38,10 +38,13 @@ export async function getUser() {
     return userManager ? userManager.getUser() : null;
 }
 
-/** Returns the current user if valid; otherwise redirects to login once and returns null. */
-export async function ensureUser() {
-    const user = await getUser();
-    if (user && !user.expired) return user;
-    login();
-    return null;
+/** Shows a simple message in the main content area when the user must be logged in. */
+export function showLoginRequiredMessage() {
+    const container = document.querySelector('.row');
+    if (!container) return;
+    container.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'col-12 text-center text-muted py-5';
+    div.textContent = 'You need to be logged in to view this.';
+    container.appendChild(div);
 }
