@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +26,8 @@ SECRET_KEY = 'django-insecure-e63h)g$nv_4093f6pk)^uu%^aboq4h%r$fr&_$tt7(ogatbw%e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "auth-app", "frontend", "127.0.0.1"]
+
 
 
 # Application definition
@@ -133,8 +135,45 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/admin/login/'
 
 OAUTH2_PROVIDER = {
+    'OIDC_ENABLED' : True,
+
+    'OIDC_RSA_PRIVATE_KEY' : """
+    -----BEGIN PRIVATE KEY-----
+    MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCccfhR3ft71DOk
+    tz3eBAFrHo/DWzlWY+McxebAy/ucKSa3DJPiPstA/X747A3vJk0YUlMguzfyhegT
+    oNhVMHw4MsPIiybZmirObpzXwUZuLAFD3LvhQZEMRxJiAfZQUhiXuG/i1riTbHah
+    twMVo7D+TDmaZoHARPui5KNxQUNsNzJDwaewykOHj5LH7YRScaIc4Pry+wXsoYb+
+    WmFVVxo7MzM/chEDeAQZubrNlmgp7zHYYoTx2YWehVHMyokfZBvEum0Fvd2WpDVn
+    QF89BVK2vLXlU3guuMMdidsk4aTggPgJR2cyOIPSUbFzCoQ8ymCPXmusoATO+Pga
+    LuAj5bQ5AgMBAAECggEAA4XjgtXIuINQ/b1spL0ar71anRpxokWR6I93q1F3TeR1
+    V+ZDcZ2wDmYcVQxdIfdkVrm1NTBSHwwvQOXnM+qUGYs3HSMuZvRm+2AX+G8vSq2D
+    V8e26WiEai4y4Uchs1xYlm4TrZw1QDNPQUQG9ev06+fD3Ptq95f2F2HRC8IIUShX
+    XYcU+ffe85ztkRXA2Gts54ItSaK2RVad9EqfwAnnIX/AaabL60eG3tR3eM+Ezx5l
+    jUvI5NSwvPOqTycf4Sxr14r8yOgxFo2zIRwVUGtGdC3bfelBGvmXq7JUY1x+rZYC
+    f5taII3J4+Yy7hyGVlbJlIjKZdusNyJRcKUZrTAWiQKBgQDM55I+jkn+BIA5nKWv
+    hczKeL15rUgGvvvlXJZou+RadQ6q+4F9yJPwpXv3OnvXs4r7UzhAUdjZeDmlqSTm
+    0lhfFeOvkwEseFV4/aJ89hgpQ2C02MUFgrbz5uLbnW5usxvAwPgWGFn48aj3TkuA
+    2mwzArM09urxspOQ9AQ0dDQgfQKBgQDDdOme5im6bXwinPyecnRywYa7NkLeykXq
+    rMuu0jrzr1Ly0Pw+Guz0UE4h8oJUy/zjHBNsykieOBeWuCuZK+Q2zlKfDY4tGcbM
+    HW4qlMQhpxzOPHJm89CM0HvKpemtyzZssDXOag1MzbyAnb5FPIgcnC/k+9TOKibM
+    qMasGVCLbQKBgQCSeCoq+01a/d6m0BoDuPIl/V773mjxIY4waxm9LipSmwBsKrJq
+    tnlB+Rj/Jdgm3VnIw7kfCSKoeW9Dwv/024F+HsiN1dht8GqwvSVsjAHDZT14qMdV
+    ZBXhjTa24/dvvCpng8kTCj8uW5h7h4UjS38yi4iMoMBbG1qusC9dS3+DhQKBgHNb
+    1WbLQWWeqN1k+lQqCUCRqAtmgyErEQjo425S9ihNGg/l+HpPOfsYSoUOtI2Ht8Hz
+    GCPlX+bCBGoYWOMWXKNcMrddMMS9qe9ej17iXr/d+cpfMsZAsJ3rjqSUN88zWPPd
+    LGSfgyoJY3Alqd8DUvJP3JSxbXAgwLWaB2gbqMYhAoGAYilfPfemAHTQTUgJNWuL
+    DM5luBuCgqsq+ZjPl3YIvcssVnu39kY8kWRFev9O0NnoWUE5+5Gi6GKfbv+MvUFB
+    X02wCSbs5HyyeheFvKAek4DaeRUmn3zmQL+M6QZyEqh7aEC7ZSxs/gdsTEXtI1ee
+    IerdljHIZi6JN3xB/G47QdA=
+    -----END PRIVATE KEY-----
+    """,
+
+    'ALLOWED_SCHEMES' : ["https", "http"],
+
+    'OIDC_SUBJECT_TYPES_SUPPORTED' : ["public", "private"],
+
     # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope',  'introspection': 'Introspect token scope', 'groups': 'Access to your groups',}
+    'SCOPES': {'openid': 'OpenID Connect scope', 'read': 'Read scope', 'write': 'Write scope',  'introspection': 'Introspect token scope', 'groups': 'Access to your groups',}
 }
 
 CORS_ORIGIN_ALLOW_ALL = True

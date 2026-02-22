@@ -28,3 +28,11 @@ export function updateAuthUI(user) {
 export async function getUser() {
     return userManager ? userManager.getUser() : null;
 }
+
+/** Returns the current user if valid; otherwise redirects to login once and returns null. */
+export async function ensureUser() {
+    const user = await getUser();
+    if (user && !user.expired) return user;
+    login();
+    return null;
+}

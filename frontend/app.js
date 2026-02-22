@@ -4,6 +4,7 @@
  */
 
 import * as api from './api.js';
+import * as auth from './auth.js';
 import { formatDate } from './utils.js';
 
 function getContainer() {
@@ -12,6 +13,11 @@ function getContainer() {
 
 // --- listProjects (active only, deterministic order) ---
 export async function listProjects() {
+    const user = await auth.getUser();
+    if (!user || user.expired) {
+        auth.login();
+        return;
+    }
     const container = getContainer();
     container.innerHTML = '';
 
@@ -114,6 +120,11 @@ export async function listProjects() {
 
 // --- listAllProjects (all projects, deterministic order) ---
 export async function listAllProjects() {
+    const user = await auth.getUser();
+    if (!user || user.expired) {
+        auth.login();
+        return;
+    }
     const container = getContainer();
     container.innerHTML = '';
 
@@ -420,6 +431,11 @@ function escapeHtml(text) {
 
 // --- listDevelopers ---
 export async function listDevelopers() {
+    const user = await auth.getUser();
+    if (!user || user.expired) {
+        auth.login();
+        return;
+    }
     const container = getContainer();
     container.innerHTML = '';
 
@@ -577,6 +593,11 @@ export function showNewProjectForm() {
 
 // --- workPermit ---
 export async function workPermit() {
+    const user = await auth.getUser();
+    if (!user || user.expired) {
+        auth.login();
+        return;
+    }
     const container = getContainer();
     container.innerHTML = '';
 

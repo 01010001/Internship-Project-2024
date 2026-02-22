@@ -148,10 +148,12 @@ REST_FRAMEWORK = {
     )
 }
 
+
+
 OAUTH2_PROVIDER = {
     
-    'RESOURCE_SERVER_INTROSPECTION_URL': 'http://localhost:8001/o/introspect/',
-    'RESOURCE_SERVER_AUTH_TOKEN': 'EInurKRstdv7LdMMT2bgva4bIHfQOr',
+    'RESOURCE_SERVER_INTROSPECTION_URL': 'http://auth-app:8001/o/introspect/',
+    # 'RESOURCE_SERVER_AUTH_TOKEN': 'EInurKRstdv7LdMMT2bgva4bIHfQOr',
     # OR this but not both:
-    # 'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': ('rs_client_id','rs_client_secret'),
+    'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': ('HeGqUi3Gw79hlob6v9RbgeVvGg5T68qjlYdAgxxX','oVwrlsA5DtfosDu7jnNFrjKEYHzzIuXP1bVfGF5KmzBeEpfrgrNKJHGy09oKqg1RD9zLzpMhQhm3U1ZK2HRtaOwwo4BtlxC5r1qmftBw7q7Ma0YJm4HaOHtXLeaeuHJI'),
 }
