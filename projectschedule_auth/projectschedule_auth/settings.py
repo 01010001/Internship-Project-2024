@@ -171,6 +171,8 @@ OAUTH2_PROVIDER = {
     'ALLOWED_SCHEMES' : ["https", "http"],
 
     'OIDC_SUBJECT_TYPES_SUPPORTED' : ["public", "private"],
+    
+    "OIDC_RP_INITIATED_LOGOUT_ENABLED": True,
 
     # this is the list of available scopes
     'SCOPES': {'openid': 'OpenID Connect scope', 'read': 'Read scope', 'write': 'Write scope',  'introspection': 'Introspect token scope', 'groups': 'Access to your groups',}
