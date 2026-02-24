@@ -11,21 +11,31 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# 1. Define paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 2. Load .env file
+load_dotenv(BASE_DIR / '.env')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# 3. Handle Boolean (DEBUG)
+# os.getenv returns a string; we compare it to 'True'
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*lept&#mjwm_d6fey*^hufn1yo*zjzr1sx3=zlukqhpolqs8e2'
+# 4. Handle Lists (ALLOWED_HOSTS)
+# Split the comma-separated string into a list
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# 5. Handle Strings and Environment Setup
+SECRET_KEY = os.getenv('SECRET_KEY')
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = os.getenv('OAUTHLIB_INSECURE_TRANSPORT', '0')
 
-ALLOWED_HOSTS = []
+introspection_url = os.getenv('INTROSPECTION_URL')
+client_id = os.getenv('INTROSPECTION_ID')
+client_secret = os.getenv('INTROSPECTION_SECRET')
 
 
 # Application definition
@@ -86,6 +96,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS': {
+            'timeout': 20,  # Wait up to 20 seconds
+        },
     }
 }
 
@@ -149,11 +162,10 @@ REST_FRAMEWORK = {
 }
 
 
-
 OAUTH2_PROVIDER = {
     
-    'RESOURCE_SERVER_INTROSPECTION_URL': 'http://auth-app:8001/o/introspect/',
+    'RESOURCE_SERVER_INTROSPECTION_URL': introspection_url,
     # 'RESOURCE_SERVER_AUTH_TOKEN': 'EInurKRstdv7LdMMT2bgva4bIHfQOr',
     # OR this but not both:
-    'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': ('HeGqUi3Gw79hlob6v9RbgeVvGg5T68qjlYdAgxxX','oVwrlsA5DtfosDu7jnNFrjKEYHzzIuXP1bVfGF5KmzBeEpfrgrNKJHGy09oKqg1RD9zLzpMhQhm3U1ZK2HRtaOwwo4BtlxC5r1qmftBw7q7Ma0YJm4HaOHtXLeaeuHJI'),
+    'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': (client_id, client_secret),
 }

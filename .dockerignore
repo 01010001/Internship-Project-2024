@@ -4,3 +4,4 @@
 **/.env
 **/venv
 **/*.sqlite3
+**/private.pem

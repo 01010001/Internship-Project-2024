@@ -17,5 +17,7 @@ services:
     build: ./frontend
     ports:
       - "8080:80"
+    env_file:
+      - ./frontend/.env
     volumes:
-      - ./frontend:/usr/share/nginx/html # This maps your local files to Nginx
+      - ./frontend:/usr/share/nginx/html

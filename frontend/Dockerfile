@@ -1,6 +1,9 @@
 FROM nginx:alpine
 
-# Copy your static files to the Nginx html folder
 COPY . /usr/share/nginx/html
+
+RUN chmod +x /usr/share/nginx/html/entrypoint.sh
+
+ENTRYPOINT ["/usr/share/nginx/html/entrypoint.sh"]
 
 EXPOSE 80
