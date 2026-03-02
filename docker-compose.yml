@@ -21,3 +21,19 @@ services:
       - ./frontend/.env
     volumes:
       - ./frontend:/usr/share/nginx/html
+  
+  # Auth Service Database
+  auth_db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./projectschedule_auth/.env
+
+  # Resource Service Database
+  resource_db:
+    image: mariadb:10.11
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./djangoprojectschedule/.env

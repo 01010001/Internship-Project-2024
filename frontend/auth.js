@@ -2,7 +2,7 @@
  * Authentication: OIDC login/logout and UI state.
  */
 
-import { userManager } from './config.js';
+import { userManager, authConfig } from './config.js';
 
 export function login() {
     if (userManager) userManager.signinRedirect();
@@ -12,13 +12,10 @@ export async function logout() {
     // Clear local frontend tokens
     if (userManager) await userManager.removeUser();
 
-    // Construct the Auth Server logout URL
-    const authServerLogoutUrl = "http://127.0.0.1:8001/o/logout/";
-    const clientId = "HeGqUi3Gw79hlob6v9RbgeVvGg5T68qjlYdAgxxX";
-    const postLogoutUri = encodeURIComponent("http://localhost:8080/index.html");
-
-    // Redirect the browser to clear the Django session cookie
-    window.location.href = `${authServerLogoutUrl}?client_id=${clientId}&post_logout_redirect_uri=${postLogoutUri}`;
+    // Redirect to Auth Server logout (uses config)
+    const logoutUrl = `${authConfig.authority}/logout/`;
+    const postLogoutUri = encodeURIComponent(authConfig.post_logout_redirect_uri);
+    window.location.href = `${logoutUrl}?client_id=${authConfig.client_id}&post_logout_redirect_uri=${postLogoutUri}`;
 }
 
 export function updateAuthUI(user) {
